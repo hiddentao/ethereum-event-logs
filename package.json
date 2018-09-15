@@ -11,7 +11,7 @@
   "scripts": {
     "build": "babel src -d dist --ignore *.test.js",
     "lint": "eslint src",
-    "test": "jest",
+    "test": "jest --no-cache",
     "test:coverage": "yarn test --coverage"
   },
   "repository": {
@@ -60,7 +60,7 @@
       "**/*.test.js"
     ],
     "collectCoverageFrom": [
-      "**/*.js"
+      "src/*.js"
     ],
     "coverageDirectory": "<rootDir>/test-coverage",
     "transform": {
