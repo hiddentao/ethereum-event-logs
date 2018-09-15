@@ -1,11 +1,12 @@
 import Ganache from 'ganache-core'
-import keccak from 'keccak'
 import Web3 from 'web3'
 
 import { bytecode, abi } from '../testdata/eventsContract.json'
 import { parseLog } from './'
 
 describe('parseLog', () => {
+  let web3
+  let address
   let receipt
 
   beforeAll(async () => {
@@ -19,7 +20,7 @@ describe('parseLog', () => {
 
     console.info(`Account: ${accounts[0]}`)
 
-    const web3 = new Web3(provider)
+    web3 = new Web3(provider)
 
     const contract = new web3.eth.Contract(abi, null, {
       from: accounts[0],
@@ -28,7 +29,9 @@ describe('parseLog', () => {
 
     const instance = await contract.deploy({ data: bytecode }).send()
 
-    console.info(`Contract: ${instance._address}`)
+    ;({ _address: address } = instance)
+
+    console.info(`Contract: ${address}`)
 
     const tx = await new Promise(resolve => {
       instance.methods.emit().send().on('transactionHash', resolve)
@@ -42,13 +45,21 @@ describe('parseLog', () => {
   it('parses an individual event', () => {
     const eventAbi = abi.find(({ name }) => name === 'Event1')
 
-    const [ event ] = parseLog(receipt.logs, eventAbi)
+    const [ event ] = parseLog(receipt.logs, [ eventAbi ])
 
     expect(event.name).toEqual('Event1')
     expect(event.args).toEqual({
       stringVar1: 'test1',
       stringVar2: 'test2'
     })
+  })
+
+  it('skips anonymous events', () => {
+    const eventAbi = abi.find(({ name }) => name === 'Event4')
+
+    const parsed = parseLog(receipt.logs, [ eventAbi ])
+
+    expect(parsed.length).toEqual(0)
   })
 
   it('parses multiple events', () => {
@@ -64,9 +75,23 @@ describe('parseLog', () => {
 
     expect(event2.name).toEqual('Event2')
     expect(event2.args).toEqual({
-      bytes32Var: keccak('test1'),
+      bytes32Var: web3.utils.sha3('test1'),
       boolVar: false,
       stringVar: 'test2',
+    })
+  })
+
+  it('parses events supplied as a contract abi', () => {
+    const [ event1, event2, event3 ] = parseLog(receipt.logs, abi)
+
+    expect(event1.name).toEqual('Event1')
+    expect(event2.name).toEqual('Event2')
+
+    expect(event3.name).toEqual('Event3')
+    expect(event3.args).toEqual({
+      addressVar: address,
+      uintVar: '2342',
+      uint64Var: [ '100', '101', '102' ],
     })
   })
 })

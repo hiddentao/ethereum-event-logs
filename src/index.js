@@ -7,7 +7,7 @@ const decodeParameters = (names, types, data) => {
     const result = Abi.decodeParameters(types, data)
 
     for (let i = 0; types.length > i; i += 1) {
-      if (result[i]) {
+      if (undefined !== result[i]) {
         ret[names[i]] = result[i]
       }
     }
@@ -49,31 +49,10 @@ const createArgsParser = input => {
 
 const cachedParsers = new WeakMap()
 
-export const parseLog = (logs, abi, filter = {}) => {
-  // allow for multiple
-  if (!Array.isArray(abi)) {
-    abi = [ abi ]
-  }
+export const parseLog = (logs, eventAbis, filter = {}) => {
+  const filteredAbis = eventAbis.filter(({ anonymous }) => !anonymous)
 
-  // now let's expand them out
-  const eventAbis = abi.reduce((soFar, thisAbi) => {
-    // event abi?
-    if (thisAbi.type === 'event' && !thisAbi.anonymous) {
-      soFar.push(thisAbi)
-    }
-    // contract abi
-    else {
-      soFar.push(...thisAbi.filter(item => item.type === 'event' && !item.anonymous))
-    }
-
-    return soFar
-  }, [])
-
-  const parsers = eventAbis.map(thisAbi => {
-    if (cachedParsers[thisAbi]) {
-      return thisAbi
-    }
-
+  const parsers = filteredAbis.map(thisAbi => {
     const { name, inputs } = thisAbi
 
     // compute event signature hash
@@ -81,20 +60,23 @@ export const parseLog = (logs, abi, filter = {}) => {
       `${name}(${inputs.map(({ type }) => type).join(',')})`
     )
 
-    // create an argument parser
-    const parseArgs = createArgsParser(inputs)
+    if (!cachedParsers[sig]) {
+      cachedParsers[sig] = {
+        name,
+        sig,
+        parseArgs: createArgsParser(inputs)
+      }
+    }
 
-    cachedParsers[thisAbi] = { name, sig, parseArgs }
-
-    return cachedParsers[thisAbi]
+    return cachedParsers[sig]
   })
 
   const filteredLogs = (filter.address) ? (
     logs.filter(({ address }) => address === filter.address)
   ) : logs
 
-  return filteredLogs.reduce((retSoFar, log) => {
-    const matches = parsers.reduce((soFar, { name, sig, parseArgs }) => {
+  return parsers.reduce((retSoFar, { name, sig, parseArgs }) => {
+    const matches = filteredLogs.reduce((soFar, log) => {
       if (log.topics[0] === sig) {
         soFar.push({
           name,
@@ -102,7 +84,6 @@ export const parseLog = (logs, abi, filter = {}) => {
           log
         })
       }
-
       return soFar
     }, [])
 
