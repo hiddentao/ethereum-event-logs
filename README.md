@@ -64,37 +64,37 @@ console.log(events)
   {
     name: 'Event1',
     args: {
-      stringVar1: '0x...', /* === web3.utils.sha3('test1') */
+      stringVar1: '0x...', // === web3.utils.sha3('test1')
       stringVar2: 'test2'
     },
     log: {
-      ... /* the log object which represents this event */
+      ... // the log object which represents this event
     }
   },
   {
     name: 'Event2',
     args: {
-      bytes32Var: '0x...', /* === web3.utils.sha3('test1') */
+      bytes32Var: '0x...', // === web3.utils.sha3('test1')
       boolVar: false,
       stringVar: 'test2'
     },
     log: {
-      ... /* the log object which represents this event */
+      ... // the log object which represents this event
     }
   },
   {
     name: 'Event3',
     args: {
-      addressVar: '0x...' /* address of contract */,
+      addressVar: '0x...', // address of contract
       uintVar: '2342',
       uint64Var1: '0x...',
       uint64Var2: [ '100', '101', '102' ],
     },
     log: {
-      ... /* the log object which represents this event */
+      ... // the log object which represents this event
     }
   }
-  /* Event4 is defined as anonymous, hence it doesn't get parsed */
+  // Event4 is defined as anonymous, hence it doesn't get parsed
 ]
  */
 ```
