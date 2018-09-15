@@ -32,6 +32,7 @@
     "babel-jest": "^23.6.0",
     "babel-jest-assertions": "^0.1.0",
     "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
     "bignumber.js": "^7.2.1",
     "coveralls": "^3.0.2",
     "eslint": "^5.3.0",
@@ -67,5 +68,10 @@
       "^.+\\.js$": "<rootDir>/.jest/transform.js"
     },
     "setupTestFrameworkScriptFile": "<rootDir>/.jest/setupTestFrameworkScriptFile.js"
+  },
+  "babel": {
+    "presets": [
+      "env"
+    ]
   }
 }
