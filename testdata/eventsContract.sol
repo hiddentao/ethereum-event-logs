@@ -1,7 +1,7 @@
 pragma solidity ^0.4.24;
 
 contract Events {
-    event Event1(string stringVar1, string stringVar2);
+    event Event1(string stringVar1 indexed, string stringVar2);
     event Event2(bytes32 indexed bytes32Var, bool indexed boolVar, string stringVar);
     event Event3(address indexed addressVar, uint uintVar, uint[] uint64Var);
     event Event4(bytes bytesVar) anonymous;

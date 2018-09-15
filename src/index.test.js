@@ -49,7 +49,7 @@ describe('parseLog', () => {
 
     expect(event.name).toEqual('Event1')
     expect(event.args).toEqual({
-      stringVar1: 'test1',
+      stringVar1: web3.utils.sha3('test1'), /* string type cannot be indexed, so is auto-hashed by evm */
       stringVar2: 'test2'
     })
   })
@@ -100,11 +100,6 @@ describe('parseLog', () => {
     const [ event1, event2 ] = parseLog(receipt.logs, eventAbis)
 
     expect(event1.name).toEqual('Event1')
-    expect(event1.args).toEqual({
-      stringVar1: 'test1',
-      stringVar2: 'test2'
-    })
-
     expect(event2.name).toEqual('Event2')
     expect(event2.args).toEqual({
       bytes32Var: web3.utils.sha3('test1'),

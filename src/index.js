@@ -26,7 +26,8 @@ const createArgsParser = input => {
   input.forEach(({ indexed, name, type }) => {
     if (indexed) {
       indexedNames.push(name)
-      indexedTypes.push(type)
+      // "string" type cannot be indexed, see https://ethereum.stackexchange.com/a/7170
+      indexedTypes.push(type === 'string' ? 'bytes32' : type)
     } else {
       nonIndexedNames.push(name)
       nonIndexedTypes.push(type)
