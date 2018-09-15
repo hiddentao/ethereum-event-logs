@@ -101,7 +101,7 @@ console.log(events)
 
 _Notice above that `Event1.stringVar1` is returned as a SHA3 hash instead of the
 actual string. This is because only finite-sized scalar types (i.e. that fit within
-  64 bytes) can be `indexed` as an event argument. All other types have their
+  a 64 byte hex code) can be `indexed` as an event argument. All other types have their
   values hashed prior to indexing._
 
 To only search for an individual event just pass that event's ABI on its own:
