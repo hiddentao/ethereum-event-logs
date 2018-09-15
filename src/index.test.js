@@ -54,6 +54,38 @@ describe('parseLog', () => {
     })
   })
 
+  it('can apply a contract address filter', () => {
+    const eventAbi = abi.find(({ name }) => name === 'Event1')
+
+    let results = parseLog(receipt.logs, [ eventAbi ], {
+      address: `0xdaedbeef`
+    })
+
+    expect(results.length).toEqual(0)
+
+    results = parseLog(receipt.logs, [ eventAbi ], {
+      address
+    })
+
+    expect(results.length).toEqual(1)
+  })
+
+  it('can apply a block number filter', () => {
+    const eventAbi = abi.find(({ name }) => name === 'Event1')
+
+    let results = parseLog(receipt.logs, [ eventAbi ], {
+      blockNumber: 12323
+    })
+
+    expect(results.length).toEqual(0)
+
+    results = parseLog(receipt.logs, [ eventAbi ], {
+      blockNumber: receipt.logs[0].blockNumber
+    })
+
+    expect(results.length).toEqual(1)
+  })
+
   it('skips anonymous events', () => {
     const eventAbi = abi.find(({ name }) => name === 'Event4')
 

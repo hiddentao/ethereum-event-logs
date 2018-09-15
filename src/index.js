@@ -71,9 +71,14 @@ export const parseLog = (logs, eventAbis, filter = {}) => {
     return cachedParsers[sig]
   })
 
-  const filteredLogs = (filter.address) ? (
-    logs.filter(({ address }) => address === filter.address)
-  ) : logs
+  let filteredLogs = logs
+
+  if (Object.keys(filter).length) {
+    filteredLogs = logs.filter(({ address, blockNumber }) => (
+      (address === filter.address || undefined === filter.address)
+        && (blockNumber === filter.blockNumber || undefined === filter.blockNumber)
+    ))
+  }
 
   return parsers.reduce((retSoFar, { name, sig, parseArgs }) => {
     const matches = filteredLogs.reduce((soFar, log) => {
