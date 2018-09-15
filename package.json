@@ -1,0 +1,70 @@
+{
+  "name": "ethereum-event-logs",
+  "version": "1.0.0",
+  "description": "Ethereum block events log parser",
+  "main": "dist/index.js",
+  "module": "src/index.js",
+  "files": [
+    "src/index.js",
+    "dist"
+  ],
+  "scripts": {
+    "build": "babel src -d dist --ignore *.test.js",
+    "lint": "eslint src",
+    "test": "jest",
+    "test:coverage": "yarn test --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hiddentao/ethereum-event-logs.git"
+  },
+  "keywords": [
+    "ethereum",
+    "events",
+    "logs",
+    "blocks",
+    "parser"
+  ],
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-jest": "^23.6.0",
+    "babel-jest-assertions": "^0.1.0",
+    "babel-polyfill": "^6.26.0",
+    "bignumber.js": "^7.2.1",
+    "coveralls": "^3.0.2",
+    "eslint": "^5.3.0",
+    "eslint-config-airbnb-base": "^12.0.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.1.1",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-react": "^7.1.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "ganache-core": "^2.2.1",
+    "jest": "^23.6.0",
+    "keccak": "^1.4.0",
+    "web3": "1.0.0-beta.33"
+  },
+  "author": "Ramesh Nair <ram@hiddentao.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hiddentao/ethereum-event-logs/issues"
+  },
+  "homepage": "https://github.com/hiddentao/ethereum-event-logs#readme",
+  "dependencies": {
+    "web3-eth-abi": "^1.0.0-beta.36"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/*.test.js"
+    ],
+    "collectCoverageFrom": [
+      "**/*.js"
+    ],
+    "coverageDirectory": "<rootDir>/test-coverage",
+    "transform": {
+      "^.+\\.js$": "<rootDir>/.jest/transform.js"
+    },
+    "setupTestFrameworkScriptFile": "<rootDir>/.jest/setupTestFrameworkScriptFile.js"
+  }
+}

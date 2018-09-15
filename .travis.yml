@@ -1,0 +1,8 @@
+language: node_js
+node_js:
+  - "8.11.4"
+cache: yarn
+script:
+  - yarn lint
+  - yarn test:coverage && cat test-coverage/lcov.info | node_modules/.bin/coveralls
+  - yarn build
