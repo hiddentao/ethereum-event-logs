@@ -1,5 +1,13 @@
 const Abi = require('web3-eth-abi')
 
+const indexedAsHash = type => !(
+  (type.startsWith('uint')
+  || type.startsWith('int')
+  || type.startsWith('byte')
+  || type.startsWith('bool')
+  || type.startsWith('address')) && (!type.includes('['))
+)
+
 const decodeParameters = (names, types, data) => {
   const ret = {}
 
@@ -26,8 +34,14 @@ const createArgsParser = input => {
   input.forEach(({ indexed, name, type }) => {
     if (indexed) {
       indexedNames.push(name)
-      // "string" type cannot be indexed, see https://ethereum.stackexchange.com/a/7170
-      indexedTypes.push(type === 'string' ? 'bytes32' : type)
+
+      // dynamically-sized values do not get stored as-is, they are SHA3'd prior
+      // to being indexed
+      if (indexedAsHash(type)) {
+        indexedTypes.push('bytes32')
+      } else {
+        indexedTypes.push(type)
+      }
     } else {
       nonIndexedNames.push(name)
       nonIndexedTypes.push(type)
@@ -54,22 +68,24 @@ export const parseLog = (logs, eventAbis, filter = {}) => {
   const filteredAbis = eventAbis.filter(({ anonymous }) => !anonymous)
 
   const parsers = filteredAbis.map(thisAbi => {
-    const { name, inputs } = thisAbi
+    const key = JSON.stringify(thisAbi)
 
-    // compute event signature hash
-    const sig = Abi.encodeEventSignature(
-      `${name}(${inputs.map(({ type }) => type).join(',')})`
-    )
+    if (!cachedParsers[key]) {
+      const { name, inputs } = thisAbi
 
-    if (!cachedParsers[sig]) {
-      cachedParsers[sig] = {
+      // compute event signature hash
+      const sig = Abi.encodeEventSignature(
+        `${name}(${inputs.map(({ type }) => type).join(',')})`
+      )
+
+      cachedParsers[key] = {
         name,
         sig,
         parseArgs: createArgsParser(inputs)
       }
     }
 
-    return cachedParsers[sig]
+    return cachedParsers[key]
   })
 
   let filteredLogs = logs

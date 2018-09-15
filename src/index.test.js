@@ -27,7 +27,7 @@ describe('parseLog', () => {
       gas: 500000
     })
 
-    const instance = await contract.deploy({ data: bytecode }).send()
+    const instance = await contract.deploy({ data: bytecode.object }).send()
 
     ;({ _address: address } = instance)
 
@@ -115,10 +115,11 @@ describe('parseLog', () => {
     expect(event2.name).toEqual('Event2')
 
     expect(event3.name).toEqual('Event3')
-    expect(event3.args).toEqual({
+    expect(event3.args).toMatchObject({
       addressVar: address,
       uintVar: '2342',
-      uint64Var: [ '100', '101', '102' ],
+      uint64Var2: [ '100', '101', '102' ],
     })
+    expect(event3.args.uint64Var1).toBeDefined()
   })
 })
