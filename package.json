@@ -1,7 +1,7 @@
 {
   "name": "ethereum-event-logs",
   "version": "1.0.0",
-  "description": "Ethereum block events log parser",
+  "description": "Ethereum event log parser",
   "main": "dist/index.js",
   "module": "src/index.js",
   "files": [

@@ -1,8 +1,17 @@
 language: node_js
 node_js:
-  - "8.11.4"
+- 8.11.4
 cache: yarn
 script:
-  - yarn lint
-  - yarn test:coverage && cat test-coverage/lcov.info | node_modules/.bin/coveralls
-  - yarn build
+- yarn lint
+- yarn test:coverage && cat test-coverage/lcov.info | node_modules/.bin/coveralls
+- yarn build
+deploy:
+  skip_cleanup: true
+  provider: npm
+  email: ram@hiddentao.com
+  api_key:
+    secure: IkhXqtEwbxsQoIjePN0R6TdUsXH/U778ImKnsGQpUyd0n6/9P9VPq6VYd2CQW530SZ+Aa4zx5rYD0HjBtVeH1bcb7DNFqP9639HImkJztZEhmTudCX/p8vuPAnX/XGDAtrRtU6NijHEMS2tSUHOH60sAX4ntTB3kQBm9MvH2CTgo7r7qnFsO1NM1dJZw8a1dL1W+m3HmopRaWicpsw82u5n5R0EFDDWk+HPWIoKH2XaXz8AweboCsOTdFHaSs8cmwuTQ/y2i9tcSk8WYMFPUNzA5lATQ9oHlzIsi1MKrxKBy9eNR6ogiCK1WDeMQ2f4Z+Q1qrW5+XLpvQUEh1y0sk6/EhZ1T+WRe+NPgWYCvmnWoPP/RHOu3cSw+Vy+2OI/k4664NHrVz7fF9eTbn6820XrvOumZo4NEoaMVTWKWa0Ldd3th+HNVXKzcL9vXiP52UpXpTW4+JYCpAPSJr/VxXXvEZ7TzrmlFV000Ppvo62sT4v8NljEJQ8uT84p1s1iNv8XfLsiQQVfXkf1XwTo6U1fZEf1t4P5gLDzDsaqt9Wprw87sLIzZTZBSnuw/T6w5GHS51CemC4YdSsR/Vr6K4G5qbMwhf7piOP3KHYleb7+VROGg3H2d58l78He3qIT9irLMMx2vIiMng1tqI5PikxagQRGmeO/UEv/Dac2iKDk=
+  on:
+    tags: true
+    repo: hiddentao/ethereum-event-logs
