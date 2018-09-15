@@ -1,5 +1,8 @@
 # ethereum-event-logs
 
+[![Build Status](https://api.travis-ci.org/hiddentao/ethereum-event-logs.svg?branch=master)](https://travis-ci.org/hiddentao/ethereum-event-logs)
+[![Coverage Status](https://coveralls.io/repos/github/hiddentao/ethereum-event-logs/badge.svg?branch=master)](https://coveralls.io/github/hiddentao/ethereum-event-logs?branch=master)
+
 Parse Ethereum event logs with ease! 🎡
 
 Features:
