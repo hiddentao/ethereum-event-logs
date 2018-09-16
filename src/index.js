@@ -92,8 +92,8 @@ export const parseLog = (logs, eventAbis, filter = {}) => {
 
   if (Object.keys(filter).length) {
     filteredLogs = logs.filter(({ address, blockNumber }) => (
-      (address === filter.address || undefined === filter.address)
-        && (blockNumber === filter.blockNumber || undefined === filter.blockNumber)
+      (undefined === filter.address || address.toLowerCase() === filter.address.toLowerCase())
+        && (undefined === filter.blockNumber || blockNumber === filter.blockNumber)
     ))
   }
 
