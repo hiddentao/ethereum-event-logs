@@ -1,6 +1,6 @@
 {
   "name": "ethereum-event-logs",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Ethereum event log parser",
   "main": "dist/index.js",
   "module": "src/index.js",
@@ -53,7 +53,10 @@
   },
   "homepage": "https://github.com/hiddentao/ethereum-event-logs#readme",
   "dependencies": {
-    "web3-eth-abi": "^1.0.0-beta.36"
+    "ethereumjs-abi": "^0.6.5",
+    "ethers": "^3.0.27",
+    "web3-eth-abi": "^1.0.0-beta.36",
+    "web3-utils": "^1.0.0-beta.36"
   },
   "jest": {
     "testEnvironment": "node",

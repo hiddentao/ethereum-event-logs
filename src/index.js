@@ -102,6 +102,8 @@ export const parseLog = (logs, eventAbis, filter = {}) => {
       if (log.topics[0] === sig) {
         soFar.push({
           name,
+          address: log.address,
+          blockNumber: log.blockNumber,
           args: parseArgs(log),
           log
         })

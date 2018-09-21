@@ -63,6 +63,8 @@ console.log(events)
 [
   {
     name: 'Event1',
+    address: '0x...',
+    blockNumber: 123...,
     args: {
       stringVar1: '0x...', // === web3.utils.sha3('test1')
       stringVar2: 'test2'
@@ -73,6 +75,8 @@ console.log(events)
   },
   {
     name: 'Event2',
+    address: '0x...',
+    blockNumber: 123...,
     args: {
       bytes32Var: '0x...', // === web3.utils.sha3('test1')
       boolVar: false,
@@ -84,6 +88,8 @@ console.log(events)
   },
   {
     name: 'Event3',
+    address: '0x...',
+    blockNumber: 123...,
     args: {
       addressVar: '0x...', // address of contract
       uintVar: '2342',
