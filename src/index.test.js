@@ -49,7 +49,9 @@ describe('parseLog', () => {
 
     expect(event.name).toEqual('Event1')
     expect(event.address).toEqual(address)
-    expect(event.blockNumber).toEqual(await web3.eth.getBlockNumber())
+    expect(event.blockNumber).toEqual(receipt.blockNumber)
+    expect(event.blockHash).toEqual(receipt.blockHash)
+    expect(event.transactionHash).toEqual(receipt.transactionHash)
     expect(event.args).toEqual({
       stringVar1: web3.utils.sha3('test1'), /* string type cannot be indexed, so is auto-hashed by evm */
       stringVar2: 'test2'

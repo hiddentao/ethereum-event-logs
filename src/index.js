@@ -104,6 +104,8 @@ export const parseLog = (logs, eventAbis, filter = {}) => {
           name,
           address: log.address,
           blockNumber: log.blockNumber,
+          blockHash: log.blockHash,
+          transactionHash: log.transactionHash,
           args: parseArgs(log),
           log
         })
