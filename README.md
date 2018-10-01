@@ -50,7 +50,7 @@ Here is how we can parse the logs using this library:
 
 ```js
 // import the parser
-const { parseLogs } = require('ethereum-event-logs')
+const { parseLog } = require('ethereum-event-logs')
 const { abi } = require('./ExampleContract.json')
 
 const receipt = /* execute tx on chain and wait for receipt */
