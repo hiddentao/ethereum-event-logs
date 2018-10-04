@@ -100,15 +100,19 @@ export const parseLog = (logs, eventAbis, filter = {}) => {
   return parsers.reduce((retSoFar, { name, sig, parseArgs }) => {
     const matches = filteredLogs.reduce((soFar, log) => {
       if (log.topics[0] === sig) {
-        soFar.push({
-          name,
-          address: log.address,
-          blockNumber: log.blockNumber,
-          blockHash: log.blockHash,
-          transactionHash: log.transactionHash,
-          args: parseArgs(log),
-          log
-        })
+        try {
+          soFar.push({
+            name,
+            address: log.address,
+            blockNumber: log.blockNumber,
+            blockHash: log.blockHash,
+            transactionHash: log.transactionHash,
+            args: parseArgs(log),
+            log
+          })
+        } catch (err) {
+          console.error(`Error parsing args for event ${name} in block ${log.blockNumber}`)
+        }
       }
       return soFar
     }, [])

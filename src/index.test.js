@@ -58,6 +58,21 @@ describe('parseLog', () => {
     })
   })
 
+  it('gracefully handles case where args are malformed', async () => {
+    let eventAbi = abi.find(({ name }) => name === 'Event1')
+
+    // clone the original
+    eventAbi = JSON.parse(JSON.stringify(eventAbi))
+
+    eventAbi.inputs.forEach(input => {
+      input.indexed = false
+    })
+
+    const ret = parseLog(receipt.logs, [ eventAbi ])
+
+    expect(ret).toEqual([])
+  })
+
   it('can apply a contract address filter', () => {
     const eventAbi = abi.find(({ name }) => name === 'Event1')
 
