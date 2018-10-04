@@ -134,6 +134,9 @@ const events = parseLog(receipt.log, [ eventAbi ], {
 })
 ```
 
+If there is an argument decoding failure then the corresponding event instance
+won't be included in the final results.
+
 ## Dev guide
 
 * Install deps: `yarn`
