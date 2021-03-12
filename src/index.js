@@ -68,10 +68,10 @@ export const parseLog = (logs, eventAbis, filter = {}) => {
   const filteredAbis = eventAbis.filter(({ anonymous }) => !anonymous)
 
   const parsers = filteredAbis.map(thisAbi => {
-	//if the key inputs is not found, then ignore the entry
-	if(!thisAbi.inputs) {
-		return false;
-	}
+    // if the key inputs is not found, then ignore the entry
+    if (!thisAbi.inputs) {
+        return false;
+    }
 
     const key = JSON.stringify(thisAbi)
 
