@@ -68,6 +68,11 @@ export const parseLog = (logs, eventAbis, filter = {}) => {
   const filteredAbis = eventAbis.filter(({ anonymous }) => !anonymous)
 
   const parsers = filteredAbis.map(thisAbi => {
+    // if the key inputs is not found, then ignore the entry
+    if (!thisAbi.inputs) {
+      return false
+    }
+
     const key = JSON.stringify(thisAbi)
 
     if (!cachedParsers[key]) {
@@ -91,9 +96,8 @@ export const parseLog = (logs, eventAbis, filter = {}) => {
   let filteredLogs = logs
 
   if (Object.keys(filter).length) {
-    filteredLogs = logs.filter(({ address, blockNumber }) => (
+    filteredLogs = logs.filter(({ address }) => (
       (undefined === filter.address || address.toLowerCase() === filter.address.toLowerCase())
-        && (undefined === filter.blockNumber || blockNumber === filter.blockNumber)
     ))
   }
 
@@ -104,14 +108,10 @@ export const parseLog = (logs, eventAbis, filter = {}) => {
           soFar.push({
             name,
             address: log.address,
-            blockNumber: log.blockNumber,
-            blockHash: log.blockHash,
-            transactionHash: log.transactionHash,
-            args: parseArgs(log),
-            log
+            args: parseArgs(log)
           })
         } catch (err) {
-          console.error(`Error parsing args for event ${name} in block ${log.blockNumber}`)
+          console.error(`Error parsing args for event ${name}`)
         }
       }
       return soFar
